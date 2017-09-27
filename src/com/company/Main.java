@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+// Учебный пример, создан в целях наглядной демонстрации особенностей Generic'ов
+
 public class Main {
     public static void main(String[] args) {
         example1();
@@ -33,7 +35,7 @@ public class Main {
         apples.add(apple);
 
         //дженерифицированные типы не ковариантны. Полиморфизм у дженериков не работает.
-        List<Fruit> fruits = apples;
+        List<Fruit> fruits = apples; // error
 
         // расширяем тип у List<Apples> apples, приводим его к листу типа <неизвестный тип - потомок Fruit
         List<? extends Fruit> fruitsExtends = apples;
@@ -41,8 +43,8 @@ public class Main {
 
         // ? extends Fruit - неизвестный тип. Метод get имеет аргумент типа <T>. Он не пропустит аргумент не известного типа ? extends Fruit,
         // пропустит только четкий тип <T>
-        fruitsExtends.add(apple2);
-        fruitsExtends.add(new Golden());
+        fruitsExtends.add(apple2); // error
+        fruitsExtends.add(new Golden()); // error
         // если сделать НЕ БЕЗОПАСНОЕ явное приведение - тогда работает как обычный тип <T>
         ((List<Apple>)fruitsExtends).add(apple2);
 
@@ -55,24 +57,24 @@ public class Main {
         // можно достать только Fruit, не Apple.
         Fruit apple4 = fruitsExtends.get(0);
         //У <? extends Fruit> четко известен верхний тип только Object
-        Fruit apple5 = fruitsSuper.get(0);
+        Fruit apple5 = fruitsSuper.get(0); // error
         Object apple3 = fruitsSuper.get(0);
 
         // можно передать любой лист - наследник Fruit
         setList(apples);
 
         // можно передать только тот тип аргумента, который наследуется от Fruit и имплементит Comparable
-        compareExample(new Fruit(), new Apple());
+        compareExample(new Fruit(), new Apple()); // error
         compareExample(new Golden("name1"), new Apple("nameee2"));
     }
 
     private static void setList(List<? extends Fruit> var){
         Apple apple = new Apple("Red", "Golden");
         // при типизации объекта ? extends T если в методе тип аргумента <T>, то передать в метод нельзя ничего
-        var.add(apple);
+        var.add(apple); // error
 
         // а вернуть из метода можно тип аргумента который указан после слова extends, не ниже
-        Apple ap = var.get(0);
+        Apple ap = var.get(0); // error
         Fruit ss = var.get(0);
         // то же правило для возвращения значения из итератора
         for(Fruit f : var){
