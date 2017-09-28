@@ -1,13 +1,15 @@
 package com.company;
 
+import com.company.Model.Apple;
+import com.company.Model.Fruit;
+import com.company.Model.Golden;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 // Учебный пример, создан в целях наглядной демонстрации особенностей Generic'ов
 
-public class Main {
+public class GenericWildcardExample {
     public static void main(String[] args) {
         example1();
     }
@@ -62,10 +64,6 @@ public class Main {
 
         // можно передать любой лист - наследник Fruit
         setList(apples);
-
-        // можно передать только тот тип аргумента, который наследуется от Fruit и имплементит Comparable
-        compareExample(new Fruit(), new Apple()); // error
-        compareExample(new Golden("name1"), new Apple("nameee2"));
     }
 
     private static void setList(List<? extends Fruit> var){
@@ -84,11 +82,5 @@ public class Main {
         // если в методе тип аргумента Object, то в метод при типизации объекта ? extends T можно передать любой объект
         boolean res = var.equals(new ArrayList<>());
         System.out.println(res);
-    }
-
-    // ограничение типа аргумента - можно передать аргумент унаследованный от Fruit который имплементит Comparable
-    private static <T extends Fruit & Comparable<T>> void compareExample(T arg1, T arg2){
-        int res = arg1.compareTo(arg2);
-        System.out.println(res < 1 ? arg1.getName() : arg2.getName());
     }
 }
